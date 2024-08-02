@@ -5,18 +5,20 @@ body {
     /* font-family: 'Calibri', sans-serif; */
     color:rgba(1, 55, 204, 0.822);
 }
-#brand{
+/* #brand{
     font-size: 20px;
-}
+} */
 
 .logo{
-    
+    /* background-color: red; */
     align-content: center;
 }
 
 a:link{
     text-decoration: none;
+
 }
+
 .container1 {
     display: flex;
     justify-content: center;
@@ -34,7 +36,20 @@ h2  {
     font-family: 'Arial', 'Times New Roman', Times, serif;
     /* color: rgba(24, 172, 209, 0.822); */
 }
+.getHerc{
+    text-align: center;
+}
 
+.getHercBtn{
+    width: 230px;
+    height:50px;
+    color:white;
+    text-shadow: 1.3px 1.3px black;
+    background-color:rgba(96, 1, 204, 0.822); ;
+    border-radius: 50px;
+    font-size: 20px;
+    /* font-family:'Calibri', sans-serif; */
+}
 h3 {
     text-align: center;
     font-size: 25px;
@@ -127,13 +142,14 @@ h3 p{
 
 .navbar ul{
     display: flex;
-    font-size: 20px;
+    font-size: 15px;
     list-style-type: none;
     /* background-color: red; */
     /* justify-content: center; */
     list-style-type: none;
     text-decoration: none;
-    /* align-content: center; */
+    align-content: center;
+    align-items: center;
 }
 
 .navbar li{

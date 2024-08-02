@@ -48,7 +48,14 @@ h2  {
     background-color:rgba(96, 1, 204, 0.822); ;
     border-radius: 50px;
     font-size: 20px;
+    transition: transform .5s;
     /* font-family:'Calibri', sans-serif; */
+}
+
+.getHercBtn:hover{
+    transform: scale(1.05);
+    box-shadow: 3px 3px rgba(0, 0, 0, 0.495);
+  
 }
 h3 {
     text-align: center;

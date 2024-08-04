@@ -3,35 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hercules VPN</title>
-    <link rel="shortcut icon" type="image/x-icon" href="./images/icons/favicon.ico">
-    <link rel="stylesheet" href="./css/contact.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <title>Contact Us - Hercules VPN</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <div>
-        <div class="container1">
-            <div class="logo">
-            <!-- <img id="mainlogo" src="./images/icons/AI.LOGO.TRANSPARENCY.png" width="40px" alt="vpn logo, hercules with a shield"> -->
-            </div>
-            <nav class="navbar">
-                <ul>
-                    <li><a href="#"><img src="./images/icons/AI.LOGO.TRANSPARENCY.png" width="40px" alt=""></a></li>
-                    <li id="brand"><a href="index.html">Hercules VPN</a></li>
-                    <li><a href="features.html">Features</a></li>
-                    <li><a href="pricing.html">Pricing</a></li>
-                    <li><a href="downloads.html">Downloads</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    
-                    <div class="signup">
-                    <li>Sign in</li>
-                    <li>Create Account</li>
-                    </div>
-                </ul>
-            </nav>
+    <div class="container1">
+        <div class="logo">
+            <a href="index.html"><img id="mainlogo" src="./images/icons/AI.LOGO.TRANSPARENCY.png" width="40px" alt="vpn logo, hercules with a shield"></a>
         </div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/icons/AI.LOGO.TRANSPARENCY.png') }}" width="40px" alt=""></a></li>
+                <li id="brand"><a href="{{ url_for('index') }}">Hercules VPN</a></li>
+                <li><a href="{{ url_for('features') }}">Features</a></li>
+                <li><a href="{{ url_for('pricing') }}">Pricing</a></li>
+                <li><a href="{{ url_for('downloads') }}">Downloads</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                <div class="signup">
+                    <li><a href="{{ url_for('signin') }}">Sign In</a></li>
+                    <li><a href="{{ url_for('signup') }}">Create Account</a></li>
+                </div>
+            </ul>
+        </nav>
     </div>
 
+    <div class="contact-container">
+        <h1>Contact Us</h1>
+        <h2>We are here to help you 24/7</h2>
+        <div class="contact-info">
+            <h3>Customer Service Assistant:</h3>
+            <p><strong>Name:</strong> Jane Doe</p>
+            <p><strong>Phone:</strong> +1-800-555-1234</p>
+            <p><strong>Email:</strong> jane.doe@herculesvpn.com</p>
+        </div>
+        <div class="contact-form">
+            <h3>Note</h3>
+            <form id="contactForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="instructions">Specific Instructions:</label>
+                <textarea id="instructions" name="instructions" rows="5" required></textarea>
+                
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+    <hr><br>
+    <footer>
+        <h6>Hercules GRP<p>999 Broadway Suite 99 <br>
+            Manhattan, NY USA</p></h6>
+
+    </footer>
     <script src="./js/script.js"></script>
 </body>
 </html>

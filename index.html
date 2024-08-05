@@ -4,81 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hercules VPN</title>
-    <link rel="shortcut icon" type="image/x-icon" href="./images/icons/favicon.ico">
-    <link rel="stylesheet" href="./css/style.css">
-  
-
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='images/icons/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-        <div>
-            <div class="container1">
-                <div class="logo">
-                <!-- <img id="mainlogo" src="./images/icons/AI.LOGO.TRANSPARENCY.png" width="40px" alt="vpn logo, hercules with a shield"> -->
-                </div>
-                <nav class="navbar">
-                    <ul>
-                        <li><a href="index.html"><img src="./images/icons/AI.LOGO.TRANSPARENCY.png" width="40px" alt=""></a></li>
-                        <li id="brand"><a href="index.html">Hercules VPN</a></li>
-                        <!-- <li><a href="features.html">Features</a></li> -->
-                        <li><a href="pricing.html">Pricing</a></li>
-                        <!-- <li><a href="downloads.html">Downloads</a></li> -->
-                        <li><a href="contact.html">Contact</a></li>
+     <!-- Message Display -->
+     {% if message %}
+      <div class="alert alert-{{ message_type }}">
+          {{ message }}
+      </div>
+     {% endif %}
+    <div>
+        <div class="container1">
+            <div class="logo">
+                <!-- <img id="mainlogo" src="{{ url_for('static', filename='images/icons/AI.LOGO.TRANSPARENCY.png') }}" width="40px" alt="vpn logo, hercules with a shield"> -->
+            </div>
+            <nav class="navbar">
+                <ul>
+                    <li><a href="#"><img src="{{ url_for('static', filename='images/icons/AI.LOGO.TRANSPARENCY.png') }}" width="40px" alt=""></a></li>
+                    <li id="brand"><a href="#">Hercules VPN</a></li>
+                    <li><a href="{{ url_for('pricing') }}">Pricing</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                    <!-- <div class="signup"> -->
+                       <!-- <li><a href="{{ url_for('signup') }}">Sign in / Create Account</a></li> -->
                         
-                        <div class="signup">
-                        <!-- <li>Sign in</li> -->
-                        <li><a href="signup.html">Sign in / Create Account</a></li>
-                        </div>
-                    </ul>
-                </nav>
-            </div>
+                    <div class="signup">
+                        <li>
+                            <img src="{{ url_for('static', filename='images/icons/profile.jpg') }}" width="40px" alt=""> 
+                            {% if session.get('email') %}
+                            
+                            <a href="{{ url_for('logout') }}">
+                                <span class="fas fa-user" style="color:blue">{{ session['user_name'] }} (Logout)</span>
+                            </a>
+                            {% else %}
+                            <a href="{{ url_for('signup') }}">
+                                <span class="fas fa-user" style="color:blue">Sign in / Create Account</span>
+                            </a>
+                            {% endif %}
+                        </li>
+                    </div>
+                    <!-- </div> -->
+                </ul>
+            </nav>
         </div>
-            
-            <h1> THE STRONGEST VPN IN THE WORLD. </h1>
-            <h2>Stay secure, stay safe and stay fast.</h2>
-            <div class="getHerc">
-                <img src="./images/icons/AI.LOGO.TRANSPARENCY.png" width="160px" alt="">
-                <br>
-                <a href="pricing.html"><button class="getHercBtn" type="button">Get Hercules VPN</button></a>
-            </div>
-            <div class="minicap">
-                <div><img src="./images/icons/Flag_of_Switzerland_(Pantone).svg.png" height="30px" alt=""><p>Swiss Based</p></div><div> <img class="minicapicons" src="./images/icons/file-4.png" height="30px" alt=""><p>30-day money back guarantee</p></div><div><img src="./images/icons/privacylogo.png" height="30px" alt=""><p>Strict no-logs policy</p></div>
-            </div>
-            <div class="mainpic">
-                <img src="./images/pictures/AI.VPN.2.jpg" width="900px" alt="">
-            </div>
-
-        </div>
-        <p id="why"> Why do you need a VPN?<p>
-        <div class="per">
-            <h3><div>Stay Secure</div> <p>Your data is encrypted and can be used safely even when using public and unsecured networks.</p></h3>
-            <h3><div>Privacy</div><p>Unlike most VPN's that log your activity, we don't. Everything is kept private.</p></h3>
-            <h3><div>Flexibility</div> <p>We have servers throughout the world, allowing you to connect from or to any country you want while keeping the same fast speeds.</p></h3>
-        </div>
-        <div class="multicont">
-            <div class="multi">
-            <img id="tablet" src="./images/pictures/AI.Tablet.jpg" height="500px"  alt="tablet and pen with digital map">
+    </div>
+    <h1> THE STRONGEST VPN IN THE WORLD. </h1>
+    <h2>Stay secure, stay safe and stay fast.</h2>
+    <div class="getHerc">
+        <img src="{{ url_for('static', filename='images/icons/AI.LOGO.TRANSPARENCY.png') }}" width="160px" alt="">
+        <br>
+        <a href="{{ url_for('pricing') }}"><button class="getHercBtn" type="button">Get Hercules VPN</button></a>
+    </div>
+    <div class="minicap">
+        <div><img src="{{ url_for('static', filename='images/icons/Flag_of_Switzerland_(Pantone).svg.png') }}" height="30px" alt=""><p>Swiss Based</p></div>
+        <div><img class="minicapicons" src="{{ url_for('static', filename='images/icons/file-4.png') }}" height="30px" alt=""><p>30-day money back guarantee</p></div>
+        <div><img src="{{ url_for('static', filename='images/icons/privacylogo.png') }}" height="30px" alt=""><p>Strict no-logs policy</p></div>
+    </div>
+    <div class="mainpic">
+        <img src="{{ url_for('static', filename='images/pictures/AI.VPN.2.jpg') }}" width="900px" alt="">
+    </div>
+    <p id="why"> Why do you need a VPN?<p>
+    <div class="per">
+        <h3><div>Stay Secure</div><p>Your data is encrypted and can be used safely even when using public and unsecured networks.</p></h3>
+        <h3><div>Privacy</div><p>Unlike most VPN's that log your activity, we don't. Everything is kept private.</p></h3>
+        <h3><div>Flexibility</div><p>We have servers throughout the world, allowing you to connect from or to any country you want while keeping the same fast speeds.</p></h3>
+    </div>
+    <div class="multicont">
+        <div class="multi">
+            <img id="tablet" src="{{ url_for('static', filename='images/pictures/AI.Tablet.jpg') }}" height="500px" alt="tablet and pen with digital map">
             <h3><div>Multi-platform support</div><p>We have applications available for iOS, Windows, Android and Linux. Browse safely on your phone and tablet!
             <br><br>
             Whether you're getting work done, going over financials, browsing or even gaming, you can be confident your connection is secure from wherever and whatever you're using.
             </p></h3>
-            </div>
-        </div><br><br>
-        <br>
+        </div>
+    </div><br><br>
+    <br>
     <footer>
         <hr>
         <div class="fContainer">
             <div class="fFlexlogo">
-            <img src="./images/icons/AI.LOGO.TRANSPARENCY.png" height="50px" alt=""><p>Hercules <span class="footerVPN">VPN</span></p><br>
+            <img src="{{ url_for('static', filename='images/icons/AI.LOGO.TRANSPARENCY.png') }}" height="50px" alt=""><p>Hercules <span class="footerVPN">VPN</span></p><br>
             <figcaption>The Strongest VPN in the world.</figcaption>
             </div>
             
 
             <div class="socials">
                 <h5>Follow us:</h5>
-                <a href="https://www.facebook.com/"><img src="./images/icons/social svg/facebook-purple_gcxvti.svg" alt="" height="60px"></a>
-                <a href="https://www.instagram.com/"><img src="./images/icons/social svg/instagram-purple_qrninv.svg" alt="" height="60px"></a>
-                <a href="https://www.youtube.com/"><img src="./images/icons/social svg/youtube-purple_nuezps.svg" alt="" height="60px"></a>
-                <a href="https://www.x.com/"><img src="./images/icons/social svg/x-widestroke-purple_f4zjnu.svg" alt="" height="60px"></a>
+                <a href="https://www.facebook.com/"><img src="{{ url_for('static', filename='images/icons/social svg/facebook-purple_gcxvti.svg') }}" alt="" height="60px"></a>
+                <a href="https://www.instagram.com/"><img src="{{ url_for('static', filename='images/icons/social svg/instagram-purple_qrninv.svg') }}" alt="" height="60px"></a>
+                <a href="https://www.youtube.com/"><img src="{{ url_for('static', filename='images/icons/social svg/youtube-purple_nuezps.svg') }}" alt="" height="60px"></a>
+                <a href="https://www.x.com/"><img src="{{ url_for('static', filename='images/icons/social svg/x-widestroke-purple_f4zjnu.svg') }}" alt="" height="60px"></a>
             </div>
         </div>
         
@@ -89,6 +104,6 @@
             Manhattan, NY USA</p></h6>
 
     </footer>
-    <script src="./js/script.js"></script>
+
 </body>
 </html>

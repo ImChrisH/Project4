@@ -2,12 +2,13 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from werkzeug.security import generate_password_hash,check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
+from datetime import timedelta
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:9658@localhost/VPNCustmdb'
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:4b%233uXfCF%242@localhost/VPNCustdb'
 db = SQLAlchemy(app)
-app.app_context().push()
+app.permanent_session_lifetime= timedelta(days=1)
 
 
 class Data(db.Model):
@@ -24,9 +25,14 @@ class Data(db.Model):
         self.email=email
         self.password=password
 
+with app.app_context():
+    db.create_all()
+
 @app.route("/")
 def index():
-    return render_template("index.html")
+    message = request.args.get('message')
+    message_type = request.args.get('message_type')
+    return render_template('index.html', message=message, message_type=message_type)
 
 @app.route("/pricing")
 def pricing():
@@ -39,6 +45,7 @@ def contact():
 @app.route("/signup", methods=['POST','GET'])
 def signup():
     if request.method == 'POST':
+        session.permanent= True
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email = request.form['email']
@@ -59,8 +66,9 @@ def signup():
             db.session.rollback()
             if 'unique constraint' in str(e):
                 flash('Email or phone number already exists.', 'danger')
-                return render_template("index.Html",message='You already have an account linked to this email\n'
-                                       'try logging in or signup with a different email', message_type='failure')
+                # return render_template("index.Html",message='You already have an account linked to this email\n'
+                                    #    'try logging in or signup with a different email', message_type='failure')
+                return redirect(url_for('index', message='Account already exists', message_type='exists'))
             elif 'NOT NULL constraint' in str(e):
                 flash('All required fields must be filled out.', 'danger')
                 return render_template("signup.html",message='All required fields must be filled out.', message_type='failure')
@@ -78,7 +86,8 @@ def login():
     if user and check_password_hash(user.password, password):
         session['email'] = user.email
         session['user_name'] = user.first_name  # Store the user's first name
-        return render_template("index.Html", message='Login Successful', message_type='success')
+        # return render_template("index.Html", message='Login Successful', message_type='success')
+        return redirect(url_for('index'))  
     else:
         return render_template("index.Html", message='Invalid email or password', message_type='failure')
     

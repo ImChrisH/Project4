@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Hercules VPN</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contact.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container1">
+        <div class="logo">
+            <!-- <a href="{{ url_for('index') }}"><img id="mainlogo" src="{{ url_for('static', filename='images/icons/AI.LOGO.TRANSPARENCY.png') }}" width="40px" alt="vpn logo, hercules with a shield"></a> -->
+        </div>
+        <nav class="navbar">
+            <ul>
+                <li><a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/icons/AI.LOGO.TRANSPARENCY.png') }}" width="40px" alt=""></a></li>
+                <li id="brand"><a href="{{ url_for('index') }}">Hercules VPN</a></li>
+                <li><a href="{{ url_for('pricing') }}">Pricing</a></li>
+                <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                <div class="signup">
+                    <li>
+                        <img src="{{ url_for('static', filename='images/icons/profile.png') }}" width="40px" alt=""> 
+                        {% if session.get('email') %}
+                        
+                        <a href="{{ url_for('logout') }}">
+                            <span class="fas fa-user" style="color:blue">{{ session['user_name'] }} (Logout)</span>
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('signup') }}">
+                            <span class="fas fa-user" style="color:blue">Sign in / Create Account</span>
+                        </a>
+                        {% endif %}
+                    </li>
+                </div>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="contact-container">
+        <h1>Contact Us</h1>
+        <h2>We are here to help you 24/7</h2>
+        <div class="contact-info">
+            <h3>Customer Service Assistant:</h3>
+            <p><strong>Phone:</strong> +1-800-555-1234</p>
+            <p><strong>Email:</strong> support@herculesvpn.com</p>
+        </div>
+        <div class="contact-form">
+            <h3>Note</h3>
+            <form id="contactForm">
+                <!-- <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required> -->
+                
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="instructions">Leave us a feedback:</label>
+                <textarea id="instructions" name="instructions" rows="5" required></textarea>
+                
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div><br>
+    <footer>
+        <hr>
+        <div class="fContainer">
+            <div class="fFlexlogo">
+                <img src="{{ url_for('static', filename='images/icons/AI.LOGO.TRANSPARENCY.png') }}" height="50px" alt=""><p>Hercules <span class="footerVPN">VPN</span></p><br>
+            <figcaption>The Strongest VPN in the world.</figcaption>
+            </div>
+            
+
+            <div class="socials">
+                <h5>Follow us:</h5>
+                <a href="https://www.facebook.com/"><img src="{{ url_for('static', filename='images/icons/social svg/facebook-purple_gcxvti.svg') }}" alt="" height="60px"></a>
+                <a href="https://www.instagram.com/"><img src="{{ url_for('static', filename='images/icons/social svg/instagram-purple_qrninv.svg') }}" alt="" height="60px"></a>
+                <a href="https://www.youtube.com/"><img src="{{ url_for('static', filename='images/icons/social svg/youtube-purple_nuezps.svg') }}" alt="" height="60px"></a>
+                <a href="https://www.x.com/"><img src="{{ url_for('static', filename='images/icons/social svg/x-widestroke-purple_f4zjnu.svg') }}" alt="" height="60px"></a>
+            </div>
+        </div>
+        
+<br><br>
+<hr>
+<br><br>
+        <h6>Hercules GRP<p>999 Broadway Suite 99 <br>
+            Manhattan, NY USA</p></h6>
+
+    </footer>
+
+</body>
+</html>

@@ -5,7 +5,6 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
 app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:9658@localhost/VPNCustdb'
 db = SQLAlchemy(app)
-app.app_context().push()
 
 
 class Data(db.Model):
@@ -24,21 +23,18 @@ class Data(db.Model):
         self.phone=phone
         self.password=password
 
+
+with app.app_context():
+    db.create_all()
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/features")
-def features():
-    return render_template("features.html")
-
 @app.route("/pricing")
 def pricing():
     return render_template("pricing.html")
-
-@app.route("/downloads")
-def downloads():
-    return render_template("downloads.html")
 
 @app.route("/contact")
 def contact():

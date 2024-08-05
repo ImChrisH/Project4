@@ -5,12 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hercules VPN</title>
     <link rel="shortcut icon" type="image/x-icon" href="./images/icons/favicon.ico">
-    <link rel="stylesheet" href="./css/signup.css">
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
   
 
 </head>
 <body>
+
+      <!-- Message Display -->
+        {% if message %}
+            <div class="alert alert-{{ message_type }}">
+                 {{ message }}
+            </div>
+        {% endif %}
         <div>
             <div class="container1">
                 <div class="logo">
@@ -18,16 +25,27 @@
                 </div>
                 <nav class="navbar">
                     <ul>
-                        <li><a href="index.html"><img src="./images/icons/AI.LOGO.TRANSPARENCY.png" width="40px" alt=""></a></li>
-                        <li id="brand"><a href="index.html">Hercules VPN</a></li>
+                        <li><a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='images/icons/AI.LOGO.TRANSPARENCY.png') }}" width="40px" alt="" width="40px" alt=""></a></li>
+                        <li id="brand"><a href="{{ url_for('index') }}">Hercules VPN</a></li>
                         <!-- <li><a href="features.html">Features</a></li> -->
-                        <li><a href="pricing.html">Pricing</a></li>
+                        <li><a href="{{ url_for('pricing') }}">Pricing</a></li>
                         <!-- <li><a href="downloads.html">Downloads</a></li> -->
-                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
                         
                         <div class="signup">
-                        <!-- <li>Sign in</li> -->
-                        <li><a href="signup.html">Sign in / Create Account</a></li>
+                            <li>
+                                <img src="{{ url_for('static', filename='images/icons/profile.jpg') }}" width="40px" alt=""> 
+                                {% if session.get('email') %}
+                                
+                                <a href="{{ url_for('logout') }}">
+                                    <span class="fas fa-user" style="color:blue">{{ session['user_name'] }} (Logout)</span>
+                                </a>
+                                {% else %}
+                                <a href="{{ url_for('signup') }}">
+                                    <span class="fas fa-user" style="color:blue">Sign in / Create Account</span>
+                                </a>
+                                {% endif %}
+                            </li>
                         </div>
                     </ul>
                 </nav>
@@ -45,17 +63,17 @@
                     </p>
                 <!-- </div> -->
                     <br>
-                    <img id="createlogo1" src="./images/icons/AI.LOGO.TRANSPARENCY.png" height="200px" alt="">
+                    <img id="createlogo1" src="{{ url_for('static', filename='images/icons/AI.LOGO.TRANSPARENCY.png') }}" height="200px" alt="">
                  
             </div>
             <div class="createuser">
 
-                <form class="form" action="" >
+                <form class="form" action="{{url_for('signup')}}" method="POST">
                     <!-- <label for="fname">First Name:</label> -->
-                    <input class="field" type="text" id="fname" name ="firstname" placeholder="First Name" required>
+                    <input class="field" type="text" id="fname" name ="first_name" placeholder="First Name" required>
                     <br><br>
                     <!-- <label for="lname">Last Name:</label> -->
-                    <input class="field" type="text" id="lname" name="lastname" placeholder="Last Name" required>
+                    <input class="field" type="text" id="lname" name="last_name" placeholder="Last Name" required>
                     <br><br>
                     <!-- <label for="email">Email:</label> -->
                     <input class="field" type="email" id="email" name="email" placeholder="Email Address" required>
@@ -74,9 +92,17 @@
                         <br>
                      -->
                     <input class="submitme"type="submit" value="Create new account">
-
+                </form>
+                <br><br>
+                    <P>Already a user? </P>
+                    <p>Try logging in</p>
+                    <form class="form" action="{{url_for('login')}}" method="POST">
+                    <input class="field" type="email" id="login_email" name="login_email" placeholder="Email Address" required>
                     <br><br>
 
+                    <input class="field" type="password" id="login_password" name="login_password" placeholder="Password" required>
+
+                    <hr><br>
                     <input class="login"type="submit" value="Log in">
                 </form>
             </div>
@@ -86,17 +112,17 @@
             <hr>
             <div class="fContainer">
                 <div class="fFlexlogo">
-                <img src="./images/icons/AI.LOGO.TRANSPARENCY.png" height="50px" alt=""><p>Hercules <span class="footerVPN">VPN</span></p><br>
+                <img src="{{ url_for('static', filename='images/icons/AI.LOGO.TRANSPARENCY.png') }}" height="50px" alt=""><p>Hercules <span class="footerVPN">VPN</span></p><br>
                 <figcaption>The Strongest VPN in the world.</figcaption>
                 </div>
                 
     
                 <div class="socials">
                     <h5>Follow us:</h5>
-                    <a href="https://www.facebook.com/"><img src="./images/icons/social svg/facebook-purple_gcxvti.svg" alt="" height="60px"></a>
-                    <a href="https://www.instagram.com/"><img src="./images/icons/social svg/instagram-purple_qrninv.svg" alt="" height="60px"></a>
-                    <a href="https://www.youtube.com/"><img src="./images/icons/social svg/youtube-purple_nuezps.svg" alt="" height="60px"></a>
-                    <a href="https://www.x.com/"><img src="./images/icons/social svg/x-widestroke-purple_f4zjnu.svg" alt="" height="60px"></a>
+                    <a href="https://www.facebook.com/"><img src="{{ url_for('static', filename='images/icons/social svg/facebook-purple_gcxvti.svg') }}" alt="" height="60px"></a>
+                    <a href="https://www.instagram.com/"><img src="{{ url_for('static', filename='images/icons/social svg/instagram-purple_qrninv.svg') }}" alt="" height="60px"></a>
+                    <a href="https://www.youtube.com/"><img src="{{ url_for('static', filename='images/icons/social svg/youtube-purple_nuezps.svg') }}" alt="" height="60px"></a>
+                    <a href="https://www.x.com/"><img src="{{ url_for('static', filename='images/icons/social svg/x-widestroke-purple_f4zjnu.svg') }}" alt="" height="60px"></a>
                 </div>
             </div>
             

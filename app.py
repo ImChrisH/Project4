@@ -1,10 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, app
+from werkzeug.security import generate_password_hash,check_password_hash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:9658@localhost/VPNCustdb'
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:9658@localhost/VPNCustmdb'
 db = SQLAlchemy(app)
+app.app_context().push()
 
 
 class Data(db.Model):
@@ -13,20 +16,13 @@ class Data(db.Model):
     first_name= db.Column(db.String(50))
     last_name= db.Column(db.String(50))
     email=db.Column(db.String(120),unique=True)
-    phone = db.Column(db.String(10), unique=True, nullable=False)
-    password=db.Column(db.String(50),unique=True)
+    password=db.Column(db.String(128),unique=True)#for hashing the password increase string length
 
-    def __init__(self,first_name,last_name,email,phone,password):
+    def __init__(self,first_name,last_name,email,password):
         self.first_name= first_name
         self.last_name= last_name
         self.email=email
-        self.phone=phone
         self.password=password
-
-
-with app.app_context():
-    db.create_all()
-
 
 @app.route("/")
 def index():
@@ -40,29 +36,58 @@ def pricing():
 def contact():
     return render_template("contact.html")
 
-@app.route("/signin")
-def signin():
-    return render_template("signin.html")
-
 @app.route("/signup", methods=['POST','GET'])
 def signup():
     if request.method == 'POST':
         first_name = request.form['first_name']
         last_name = request.form['last_name']
         email = request.form['email']
-        phone = request.form['phone']
         password = request.form['password']
-        data = Data(first_name, last_name, email,phone, password)
+
+        # Generate a hashed version of the password
+        hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
+
+        # Output the hashed password
+        print(hashed_password)
+
+        data = Data(first_name, last_name, email, hashed_password)
         try:
-            db.session.add(data)
+            db.session.add(data)   
             db.session.commit()
-            flash('Registration Successful', 'success')
-            return redirect(url_for('index'))  # Redirect to another page or a success page
-        except Exception as e:
-            db.session.rollback()  # Rollback the session in case of an error
-            flash(f'An error occurred: {e}', 'danger')
-            return render_template("signup.html")
+            return render_template('index.html', message='Registration Successful', message_type='success')# Redirect to another page or a success page
+        except IntegrityError as e:
+            db.session.rollback()
+            if 'unique constraint' in str(e):
+                flash('Email or phone number already exists.', 'danger')
+                return render_template("index.Html",message='You already have an account linked to this email\n'
+                                       'try logging in or signup with a different email', message_type='failure')
+            elif 'NOT NULL constraint' in str(e):
+                flash('All required fields must be filled out.', 'danger')
+                return render_template("signup.html",message='All required fields must be filled out.', message_type='failure')
+            else:
+                flash(f'An error occurred: {e}', 'danger')
+                return render_template("signup.html",message=f'An error occurred: {e}', message_type='failure')
     return render_template("signup.html")
+
+
+@app.route("/login", methods=['POST'])
+def login():
+    email = request.form['login_email']
+    password = request.form['login_password']
+    user = Data.query.filter_by(email=email).first()
+    if user and check_password_hash(user.password, password):
+        session['email'] = user.email
+        session['user_name'] = user.first_name  # Store the user's first name
+        return render_template("index.Html", message='Login Successful', message_type='success')
+    else:
+        return render_template("index.Html", message='Invalid email or password', message_type='failure')
+    
+@app.route("/logout")
+def logout():
+    session.pop('email', None)
+    session.pop('user_name', None)
+    return redirect(url_for('index', message='Logged out successfully', message_type='success'))
+    
 
 if __name__ == "__main__":
     app.debug=True

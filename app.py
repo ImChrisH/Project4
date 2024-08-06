@@ -6,13 +6,13 @@ from datetime import timedelta
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_here'
-app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:4b%233uXfCF%242@localhost/VPNCustdb'
+app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:9658@localhost/VPN'
 db = SQLAlchemy(app)
 app.permanent_session_lifetime= timedelta(days=1)
 
 
 class Data(db.Model):
-    __tablename__="data"
+    __tablename__="mydata"
     id=db.Column(db.Integer,primary_key=True)
     first_name= db.Column(db.String(50))
     last_name= db.Column(db.String(50))
@@ -61,20 +61,15 @@ def signup():
         try:
             db.session.add(data)   
             db.session.commit()
-            return render_template('index.html', message='Registration Successful', message_type='success')# Redirect to another page or a success page
+            return redirect(url_for('index', message='Registration Successful', message_type='success'))  
         except IntegrityError as e:
             db.session.rollback()
             if 'unique constraint' in str(e):
                 flash('Email or phone number already exists.', 'danger')
-                # return render_template("index.Html",message='You already have an account linked to this email\n'
-                                    #    'try logging in or signup with a different email', message_type='failure')
                 return redirect(url_for('index', message='Account already exists', message_type='exists'))
-            elif 'NOT NULL constraint' in str(e):
-                flash('All required fields must be filled out.', 'danger')
-                return render_template("signup.html",message='All required fields must be filled out.', message_type='failure')
             else:
                 flash(f'An error occurred: {e}', 'danger')
-                return render_template("signup.html",message=f'An error occurred: {e}', message_type='failure')
+                return redirect(url_for('signup', f'An error occurred: {e}', message_type='failure'))
     return render_template("signup.html")
 
 
@@ -86,10 +81,10 @@ def login():
     if user and check_password_hash(user.password, password):
         session['email'] = user.email
         session['user_name'] = user.first_name  # Store the user's first name
-        # return render_template("index.Html", message='Login Successful', message_type='success')
-        return redirect(url_for('index'))  
+        return render_template("index.Html", message='Login Successful', message_type='success')
+        # return redirect(url_for('index'))  
     else:
-        return render_template("index.Html", message='Invalid email or password', message_type='failure')
+        return redirect(url_for('index', message='Invalid email or password', message_type='failure'))
     
 @app.route("/logout")
 def logout():
